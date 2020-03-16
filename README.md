@@ -1,7 +1,7 @@
 # IceCI - Docker Images
 
-This repo contains docker images used by IceCI pipelines. 
+This repo contains docker files for images used by IceCI pipelines. 
 
 ---
 
-_Keep cool - [Icetek](https://icetek.io/)_
+_Kept cool &#x1f9ca; by [Icetek](https://icetek.io/)_
