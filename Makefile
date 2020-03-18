@@ -12,5 +12,5 @@ build-utils:
 	docker push $(UTILS_IMG):$(IMG_VER)
 
 build-utils-arm:
-	docker build -t $(UTILS_IMG):$(IMG_VER)-arm -f utils-arm.Dockerfile .
-	docker push $(UTILS_IMG):$(IMG_VER)-arm
+	docker build -t $(UTILS_IMG)-arm:$(IMG_VER) -f utils-arm.Dockerfile .
+	docker push $(UTILS_IMG)-arm:$(IMG_VER)
