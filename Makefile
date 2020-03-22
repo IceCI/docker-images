@@ -2,13 +2,15 @@ SHELL=/bin/bash
 
 REGISTRY?=docker.io
 ORGANISATION?=iceci
-IMG_VER?=1
+IMG_VER?=2
 
-.PHONY: build-utils
+.PHONY: build-utils build-utils-arm
 
 UTILS_IMG:=$(REGISTRY)/$(ORGANISATION)/utils
 build-utils:
 	docker build -t $(UTILS_IMG):$(IMG_VER) -f utils.Dockerfile .
-	docker tag  $(UTILS_IMG):$(IMG_VER) $(UTILS_IMG):latest
 	docker push $(UTILS_IMG):$(IMG_VER)
-	docker push $(UTILS_IMG):latest
+
+build-utils-arm:
+	docker build -t $(UTILS_IMG)-arm:$(IMG_VER) -f utils-arm.Dockerfile .
+	docker push $(UTILS_IMG)-arm:$(IMG_VER)
