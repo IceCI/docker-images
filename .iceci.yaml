@@ -4,6 +4,8 @@ steps:
     user: iceci
     imageName: utils
     dockerSecret: dockerhub
+    contextPath: utils
+    dockerfilePath: utils/Dockerfile
     tags:
     - "3"
     - latest
