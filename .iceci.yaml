@@ -1,0 +1,9 @@
+steps:
+- name: docker-build
+  dockerBuild:
+    user: iceci
+    imageName: utils
+    dockerSecret: dockerhub
+    tags:
+    - "3"
+    - latest
