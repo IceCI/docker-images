@@ -1,11 +1,75 @@
 steps:
-- name: docker-build
-  dockerBuild:
+- name: docker-build-amd64
+  runtimeProfile: amd64
+  when:
+    event: ["commit", "tag"]
+  containerBuild:
     user: iceci
     imageName: utils
     dockerSecret: dockerhub
     contextPath: utils
     dockerfilePath: utils/Dockerfile
     tags:
-    - "3"
-    - latest
+    - "{{ ICE_GIT_TAG_OR_BRANCH }}-amd64"
+    - "latest-amd64"
+    buildArgs:
+    - name: BIN_ARCH
+      value: amd64
+
+
+- name: docker-build-arm
+  runtimeProfile: arm
+  when:
+    event: ["commit", "tag"]
+  containerBuild:
+    user: iceci
+    imageName: utils
+    dockerSecret: dockerhub
+    contextPath: utils
+    dockerfilePath: utils/Dockerfile
+    tags:
+    - "{{ ICE_GIT_TAG_OR_BRANCH }}-arm"
+    - "latest-arm"
+    buildArgs:
+    - name: BIN_ARCH
+      value: armv7
+
+
+- name: docker-build-arm64
+  runtimeProfile: arm64
+  when:
+    event: ["commit", "tag"]
+  containerBuild:
+    user: iceci
+    imageName: utils
+    dockerSecret: dockerhub
+    contextPath: utils
+    dockerfilePath: utils/Dockerfile
+    tags:
+    - "{{ ICE_GIT_TAG_OR_BRANCH }}-arm64"
+    - "latest-arm64"
+    buildArgs:
+    - name: BIN_ARCH
+      value: arm64
+
+
+- name: manifest-push
+  when:
+    event: ["commit", "tag"]
+  containerRun:
+    image: iceci/utils
+    script: |
+      echo "pushing manifest for tag/branch ${ICE_GIT_TAG_OR_BRANCH}"
+      manifest-tool push from-args \
+        --platforms linux/amd64,linux/arm,linux/arm64 \
+        --template "iceci/utils:${ICE_GIT_TAG_OR_BRANCH}-ARCH" \
+        --target "iceci/utils:${ICE_GIT_TAG_OR_BRANCH}"
+
+      echo "pushing manifest for tag latest"
+      manifest-tool push from-args \
+        --platforms linux/amd64,linux/arm,linux/arm64 \
+        --template "iceci/utils:latest-ARCH" \
+        --target "iceci/utils:latest"
+    files:
+    - path: /root/.docker/config.json
+      fromSecret: docker-config
