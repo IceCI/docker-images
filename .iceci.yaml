@@ -10,7 +10,7 @@ steps:
     contextPath: utils
     dockerfilePath: utils/Dockerfile
     tags:
-    - "{{ ICECI_GIT_TAG_OR_BRANCH }}-amd64"
+    - "{{ ICECI_GIT_EVENT_NAME }}-amd64"
     - "latest-amd64"
     buildArgs:
     - name: BIN_ARCH
@@ -28,7 +28,7 @@ steps:
     contextPath: utils
     dockerfilePath: utils/Dockerfile
     tags:
-    - "{{ ICECI_GIT_TAG_OR_BRANCH }}-arm"
+    - "{{ ICECI_GIT_EVENT_NAME }}-arm"
     - "latest-arm"
     buildArgs:
     - name: BIN_ARCH
@@ -46,7 +46,7 @@ steps:
     contextPath: utils
     dockerfilePath: utils/Dockerfile
     tags:
-    - "{{ ICECI_GIT_TAG_OR_BRANCH }}-arm64"
+    - "{{ ICECI_GIT_EVENT_NAME }}-arm64"
     - "latest-arm64"
     buildArgs:
     - name: BIN_ARCH
@@ -59,11 +59,11 @@ steps:
   containerRun:
     image: iceci/utils
     script: |
-      echo "pushing manifest for tag/branch ${ICECI_GIT_TAG_OR_BRANCH}"
+      echo "pushing manifest for tag/branch ${ICECI_EVENT_NAME}"
       manifest-tool push from-args \
         --platforms linux/amd64,linux/arm,linux/arm64 \
-        --template "iceci/utils:${ICECI_GIT_TAG_OR_BRANCH}-ARCH" \
-        --target "iceci/utils:${ICECI_GIT_TAG_OR_BRANCH}"
+        --template "iceci/utils:${ICECI_GIT_EVENT_NAME}-ARCH" \
+        --target "iceci/utils:${ICECI_GIT_EVENT_NAME}"
 
       echo "pushing manifest for tag latest"
       manifest-tool push from-args \
